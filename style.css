@@ -13,23 +13,27 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;tab-size:2;background:#edf2e7;bo
 :root{color-scheme:light}
 .study-dark{background:#090b10;color:#e8edf5;color-scheme:dark}
 .study-dark header{border-color:#2d3441}.study-dark .brand,.study-dark .header-note{color:#dfe8ef}
-.study-dark .guided{background:#090b10;color:#e8edf5}.study-dark .guided .card{background:#11151e;border:1px solid #293140;color:#e8edf5}
-.study-dark .guided h1,.study-dark .guided h2,.study-dark .guided h3,.study-dark .guided strong{color:#f3f5fa}
-.study-dark .guided .muted,.study-dark .guided .note,.study-dark .guided .small,.study-dark .guided .unlock-note{color:#b5c0d0}
-.study-dark .guided .eyebrow,.study-dark .guided a{color:#c8df91}.study-dark .guided .pill{background:#283121;color:#deecb7}
-.study-dark .guided .example,.study-dark .guided pre,.study-dark .guided .tip{background:#1b2230;color:#e0e9f7;border-color:#39445a}
-.study-dark .guided code{background:#202939;color:#d6b8ff}.study-dark .guided pre code{background:transparent}
-.study-dark .guided .choice{background:#171d29;color:#e8edf5;border-color:#435069}.study-dark .guided .choice.selected{background:#2b3549;border-color:#bca3f4}
-.study-dark .guided input{background:#0b101a;color:#f3f5fa;border-color:#566784}.study-dark .guided .secondary{background:#202936;color:#e0ebfa;border-color:#465570}
-.study-dark .guided .primary{background:#c3a4ff;color:#171124;opacity:1}.study-dark .guided .primary:disabled{background:#42394f;color:#b3a7c3}
-.study-dark .guided .feedback{background:#203627;color:#d9f7df;border-color:#628969}.study-dark .guided .feedback.error{background:#38242a;color:#ffd7da;border-color:#97616c}
-.study-dark .guided .bar{background:#262b3b}.study-dark .guided .bar i{background:#bb9bec}.study-dark .guided .inline-exercise{border-color:#343d4d}
-.study-dark .guided table,.study-dark .guided td,.study-dark .guided th{border-color:#465066}.study-dark .guided th{background:#283347;color:#f1f5fc}
+.study-dark .lesson-shell{background:#090b10;color:#e8edf5}.study-dark .lesson-shell .card{background:#11151e;border:1px solid #293140;color:#e8edf5}
+.study-dark .lesson-shell h1,.study-dark .lesson-shell h2,.study-dark .lesson-shell h3,.study-dark .lesson-shell strong{color:#f3f5fa}
+.study-dark .lesson-shell .muted,.study-dark .lesson-shell .note,.study-dark .lesson-shell .small,.study-dark .lesson-shell .unlock-note{color:#b5c0d0}
+.study-dark .lesson-shell .eyebrow,.study-dark .lesson-shell a{color:#c8df91}.study-dark .lesson-shell .pill{background:#283121;color:#deecb7}
+.study-dark .lesson-shell .example,.study-dark .lesson-shell pre,.study-dark .lesson-shell .tip{background:#1b2230;color:#e0e9f7;border-color:#39445a}
+.study-dark .lesson-shell code{background:#202939;color:#d6b8ff}.study-dark .lesson-shell pre code{background:transparent}
+.study-dark .lesson-shell .choice{background:#171d29;color:#e8edf5;border-color:#435069}.study-dark .lesson-shell .choice.selected{background:#2b3549;border-color:#bca3f4}
+.study-dark .lesson-shell input{background:#0b101a;color:#f3f5fa;border-color:#566784}.study-dark .lesson-shell .secondary{background:#202936;color:#e0ebfa;border-color:#465570}
+.study-dark .lesson-shell .primary{background:#c3a4ff;color:#171124;opacity:1}.study-dark .lesson-shell .primary:disabled{background:#42394f;color:#b3a7c3}
+.study-dark .lesson-shell .feedback{background:#203627;color:#d9f7df;border-color:#628969}.study-dark .lesson-shell .feedback.error{background:#38242a;color:#ffd7da;border-color:#97616c}
+.study-dark .lesson-shell .bar{background:#262b3b}.study-dark .lesson-shell .bar i{background:#bb9bec}.study-dark .lesson-shell .inline-exercise{border-color:#343d4d}
+.study-dark .lesson-shell table,.study-dark .lesson-shell td,.study-dark .lesson-shell th{border-color:#465066}.study-dark .lesson-shell th{background:#283347;color:#f1f5fc}
 .code-tabs{display:flex;gap:4px;margin-top:24px;border-bottom:1px solid #465066}.code-tabs button{background:transparent;color:#b5bed1;border:0;border-bottom:3px solid transparent;border-radius:0;padding:12px 14px;font:inherit;font-size:14px}.code-tabs button[aria-selected=true]{color:#fff;border-bottom-color:#c3a4ff}
 .code-editor-wrap{display:grid;grid-template-columns:42px minmax(0,1fr);background:#05070b;border:1px solid #39445a;border-top:0;min-height:260px;border-radius:0 0 10px 10px;overflow:hidden}
-.study-dark .guided #code-lines{margin:0;padding:16px 8px;background:#0d1017;color:#76849b;border:0;border-radius:0;text-align:right;overflow:hidden;font:15px/1.7 Consolas,Menlo,monospace}
+.study-dark .lesson-shell #code-lines{margin:0;padding:16px 8px;background:#0d1017;color:#76849b;border:0;border-radius:0;text-align:right;overflow:hidden;font:15px/1.7 Consolas,Menlo,monospace}
 #code-editor{display:block;box-sizing:border-box;resize:vertical;width:100%;min-height:260px;max-height:65dvh;margin:0;padding:16px 12px;border:0;border-radius:0;background:#05070b;color:#dbe5f9;font:16px/1.59375 Consolas,Menlo,monospace;tab-size:4;white-space:pre;overflow:auto;outline-offset:-3px}
 .code-tools{display:flex;gap:5px;overflow-x:auto;padding:8px 0}.code-tools button{flex:0 0 auto;min-width:36px;background:#202936;color:#e2dcff;border:1px solid #465570;border-radius:6px;font:16px monospace;padding:5px 8px}
 .code-input-label{margin:12px 0}.code-input-label textarea{background:#0b101a;color:#e2ebfb;border:1px solid #465570;border-radius:8px;padding:10px;font:16px monospace;width:100%;box-sizing:border-box}
 .code-output,.code-feedback-text{white-space:pre-wrap;overflow-wrap:anywhere}.code-output{min-height:80px;max-height:320px;overflow:auto}.code-preview-frame{width:100%;height:260px;background:white;border:1px solid #465570;border-radius:8px;margin-top:12px}.support-html pre{font-size:14px;overflow:auto}.code-prompt{font-size:17px;line-height:1.7}.coding-lesson .learning-card{padding:24px}.code-prompt code{font:inherit}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:600px){.coding-lesson .learning-card{padding:16px 12px}.coding-lesson h1{font-size:26px}.code-editor-wrap{grid-template-columns:32px minmax(0,1fr)}#code-editor{padding:12px 8px;min-height:280px}.study-dark .guided #code-lines{padding:12px 6px}.code-tabs button{font-size:13px;padding:10px}.coding-lesson .exercise-actions{display:flex;flex-wrap:wrap;gap:10px}.coding-lesson #run-code,.coding-lesson #next{width:100%}.code-prompt{font-size:16px}}
+@media(max-width:600px){.coding-lesson .learning-card{padding:16px 12px}.coding-lesson h1{font-size:26px}.code-editor-wrap{grid-template-columns:32px minmax(0,1fr)}#code-editor{padding:12px 8px;min-height:280px}.study-dark .lesson-shell #code-lines{padding:12px 6px}.code-tabs button{font-size:13px;padding:10px}.coding-lesson .exercise-actions{display:flex;flex-wrap:wrap;gap:10px}.coding-lesson #run-code,.coding-lesson #next{width:100%}.code-prompt{font-size:16px}}
+
+.study-dark .place-strip span{background:#222b3a;color:#e0e9fa}.study-dark .step-label>span{color:#18221a}.study-dark .box-content-demo{color:#173e35}
+
+[hidden]{display:none!important}

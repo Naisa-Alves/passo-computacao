@@ -27,7 +27,7 @@ function codeQuiz(l){
  const next=document.getElementById('next');if(next)next.onclick=()=>advanceGuidedLesson(l);
  const run=document.getElementById('run-code');if(run)run.onclick=async()=>{
   const current=session,source=field.value;if(source.length>20000){document.getElementById('answer-feedback').textContent='Use até 20.000 caracteres por desafio.';return}
-  stopCodeRun();run.disabled=true;run.textContent='Executando…';field.readOnly=true;if(inputs)inputs.disabled=true;reset.disabled=true;
+  stopCodeRun();run.disabled=true;run.textContent='Executando…';field.readOnly=true;if(inputs)inputs.disabled=true;reset.disabled=true;setTab('result');
   const result=await executeCodeTask(task,source,session.inputs,document.getElementById('code-preview'));
   if(session!==current||codeDraftKey(l)!==key||result.cancelled)return;
   field.readOnly=false;if(inputs)inputs.disabled=false;reset.disabled=false;
