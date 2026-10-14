@@ -1,5 +1,5 @@
-const CACHE = "passo-app-f701b3931bda";
-const ASSETS = ["./", "index.html", "style.css", "lessons.js", "steps.js", "curriculum.js", "lesson-refinements.js", "app.js", "pwa.js", "manifest.webmanifest", "icon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png"];
+const CACHE = "passo-app-cedc00ef2ae1";
+const ASSETS = ["./", "index.html", "style.css", "lessons.js", "steps.js", "curriculum.js", "lesson-refinements.js", "code-lessons.js", "code-practice.js", "code-worker.js", "skulpt.min.js", "skulpt-stdlib.js", "sql-asm.js", "SKULPT-LICENSE.txt", "SQLJS-LICENSE.txt", "app.js", "pwa.js", "manifest.webmanifest", "icon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png"];
 const URLS = ASSETS.map(path=>new URL(path,self.registration.scope).href);
 self.addEventListener('install',event=>{
  event.waitUntil((async()=>{
