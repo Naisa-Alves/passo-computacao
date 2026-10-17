@@ -37,7 +37,7 @@ function explainCodeLine(line,lang){
  if(/^(#|\/\/|\/\*|<!--|--)/.test(s))return 'Comentário: orienta quem lê. Ele não faz parte das instruções executadas.';
  if(/^def |^function /.test(s))return 'Define uma função. Os nomes entre parênteses recebem os argumentos de cada chamada; o corpo descreve o que fazer com eles.';
  if(/^return\b/.test(s))return 'Devolve o resultado ao ponto que chamou a função. Isso é diferente de apenas mostrar um texto na tela.';
- if(/\bprint\(|console\.log\(/.test(s))return 'Mostra o valor da expressão na saída. Para entender o resultado, descubra primeiro o valor que chega aos parênteses.';
+ if(/\bprint\(|console\.log\(/.test(s))return 'Mostra o valor da expressão na saída. '+(/\blen\(/.test(s)?'Aqui, len conta os itens da coleção ou os caracteres do texto; o número contado é o que será mostrado.':/\[\d+\]/.test(s)?'Os colchetes acessam uma posição. Lembre que o índice 0 é a primeira posição; descubra qual item será lido antes de imprimir.':'Para entender o resultado, descubra primeiro o valor que chega aos parênteses. Mostrar um valor não modifica a variável nem substitui um return.');
  if(/\binput\(/.test(s))return 'Recebe uma entrada como texto. Uma conversão como int permite fazer contas com esse dado.';
  if(/^if\b|^else\b/.test(s))return 'Escolhe um caminho. Confira a condição e observe o recuo ou as chaves que delimitam o bloco.';
  if(/^for\b|^while\b/.test(s))return 'Inicia uma repetição. Acompanhe o valor da variável em cada volta e confira como o laço termina.';
@@ -51,6 +51,10 @@ function explainCodeLine(line,lang){
  if(/^UPDATE|^DELETE/i.test(s))return 'Altera ou remove linhas. Leia a condição WHERE antes de executar para prever quais registros serão afetados.';
  if(/^SELECT/i.test(s))return 'Consulta dados: SELECT escolhe o que mostrar, FROM indica a origem e WHERE pode filtrar as linhas.';
  if(/href=/.test(s))return 'Cria um link. href guarda o destino; o conteúdo entre a abertura e o fechamento de a é o texto visível.';
+ if(/^<h[1-6]\b/.test(s))return 'Marca um título na hierarquia do documento. h1 é o título principal; h2 inicia uma seção abaixo dele. O texto entre as tags é o título que aparece na página.';
+ if(/^<p\b/.test(s))return 'Cria um parágrafo. <p> inicia o elemento e </p> o fecha; o conteúdo entre as tags é o texto do parágrafo. Isso organiza o significado, não apenas o tamanho das letras.';
+ if(/^<label\b/.test(s))return 'Identifica um campo do formulário. O valor de for deve corresponder ao id do input para associar o rótulo ao campo correto.';
+ if(/^<input\b/.test(s))return 'Cria um campo de entrada. type escolhe seu tipo; id permite identificá-lo; required solicita preenchimento antes do envio pelo formulário.';
  if(/^<\//.test(s))return 'Fecha o elemento iniciado pela tag correspondente. Confira se as tags estão aninhadas na ordem correta.';
  if(/^</.test(s))return 'Marca um elemento HTML. O nome da tag indica sua função; os atributos acrescentam informações, como classe ou identificador.';
  if(/padding|margin/.test(s))return 'Ajusta o espaço da caixa. Padding fica dentro da borda; margin fica fora. Compare o valor e a unidade.';
@@ -59,7 +63,8 @@ function explainCodeLine(line,lang){
  if(/position|top:|right:|bottom:|z-index/.test(s))return 'Controla posicionamento ou sobreposição. Confira qual é a referência usada para medir o deslocamento.';
  if(/^[.#][\w-]+\s*\{|\{\s*$/.test(s))return 'Abre um bloco de regras ou instruções. O seletor ou cabeçalho anterior define a que esse bloco se aplica.';
  if(s==='}'||s==='};')return 'Fecha o bloco aberto anteriormente. Confira o recuo para enxergar seu alcance.';
- if(/=/.test(s))return 'Acompanhe a expressão à direita e a variável ou propriedade à esquerda. Uma atribuição guarda um valor; uma comparação apenas testa uma condição.';
+ if(/\+=/.test(s))return 'Atualiza um acumulador. x += valor significa x = x + valor: leia o valor anterior, some o aumento e guarde o resultado no mesmo nome.';
+ if(/=/.test(s))return 'Primeiro calcule a expressão à direita. Depois guarde seu resultado na variável ou propriedade à esquerda. Se o nome já tinha um valor, a atribuição o substitui; = não é um teste de igualdade.';
  return 'Leia esta parte junto com a anterior. Identifique os dados usados e o efeito esperado antes de seguir para a próxima linha.';
 }
 function journeyExample(l){
