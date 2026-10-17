@@ -36,4 +36,9 @@
  }).catch(()=>{status.textContent='Não foi possível preparar o modo offline. Você ainda pode estudar com conexão.'});
  window.addEventListener('online',()=>{checkOffline();registration?.update().catch(()=>{})});
  window.addEventListener('offline',checkOffline);
+ // iPhone home-screen apps may resume without reloading the document.
+ let lastUpdateCheck=0;
+ function checkForUpdate(){if(!navigator.onLine||!registration||Date.now()-lastUpdateCheck<30000)return;lastUpdateCheck=Date.now();registration.update().then(()=>showUpdate(registration)).catch(()=>{});checkOffline()}
+ window.addEventListener('pageshow',checkForUpdate);
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkForUpdate()});
 })();
