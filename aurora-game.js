@@ -1,11 +1,11 @@
 const Aurora=(()=>{
  const E=AuroraEngine,KEY='passo-aurora-v1';let s,active=false,panel=null,bits=0,busy=false,token=0,bot=null,hit=null,powerSuccess=false,robotSuccess=false,ruleReport=null,hintOpen=false,face=1;
- let message='',storage=true;
+ let message='',storage=true,failedCommand=null;
  const astronaut=`<svg viewBox="0 0 48 58" aria-hidden="true"><ellipse cx="24" cy="54" rx="15" ry="3" fill="#0008"/><rect x="8" y="26" width="9" height="19" rx="4" fill="#7a62bf"/><path d="M17 37h14v15H17z" fill="#b5b4d2"/><path d="M18 48v6m12-6v6" stroke="#7e79a7" stroke-width="7" stroke-linecap="round"/><rect x="14" y="27" width="23" height="21" rx="9" fill="#e7e3ff"/><path d="M16 30l-5 12m23-12l6 10" stroke="#d3ceee" stroke-width="7" stroke-linecap="round"/><rect x="18" y="31" width="14" height="11" rx="3" fill="#8a64d8"/><circle cx="28" cy="35" r="2" fill="#d8ffb4"/><rect x="10" y="4" width="29" height="29" rx="13" fill="#eeeaff"/><rect x="14" y="10" width="24" height="15" rx="7" fill="#182e4d"/><path d="M19 13h11" stroke="#91f2ef" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="28" r="3" fill="#b69aff"/></svg>`;
  const robot=`<svg viewBox="0 0 48 50" aria-hidden="true"><ellipse cx="24" cy="45" rx="15" ry="3" fill="#0007"/><path d="M24 9V3" stroke="#80e4dd" stroke-width="3"/><circle cx="24" cy="3" r="3" fill="#e4ffad"/><rect x="8" y="10" width="32" height="26" rx="10" fill="#91e0d5"/><rect x="12" y="15" width="24" height="13" rx="5" fill="#152945"/><circle cx="19" cy="21" r="2.5" fill="#b9ffbd"/><circle cx="29" cy="21" r="2.5" fill="#b9ffbd"/><path d="M16 37v5m16-5v5" stroke="#5aaca7" stroke-width="6" stroke-linecap="round"/></svg>`;
  function load(){try{return E.sanitize(JSON.parse(localStorage.getItem(KEY)))}catch{return E.fresh()}}
  function persist(){try{localStorage.setItem(KEY,JSON.stringify(s))}catch{storage=false}}
- function setMessage(text){message=text;const p=document.getElementById('aurora-message');if(p)p.textContent=text}
+ function setMessage(text){message=text;for(const id of ['aurora-message','aurora-puzzle-feedback']){const p=document.getElementById(id);if(p)p.textContent=text}}
  function objective(){return s.powerStage<3?'Restaure a energia do setor':s.robotStage<2?'Resgate e programe Lume':!s.bridgeOpen?'Configure a ponte de segurança':'Atravesse a porta do sinal'}
  function actorStyle(p){return `left:${(p.x+.5)/9*100}%;top:${(p.y+.5)/7*100}%`}
  function label(id){return {power:'Painel de energia',console:'Console de Lume',bridge:'Terminal da ponte',exit:'Porta do sinal'}[id]}
@@ -14,7 +14,7 @@ const Aurora=(()=>{
   return `<button type="button" class="station-cell ${floor?'floor':'wall'} ${door?'bulkhead':''} ${object?'object object-'+object:''}" data-tile="${x},${y}" aria-label="${object?label(object):floor?'Piso':'Parede'} · coluna ${x+1}, linha ${y+1}" tabindex="${object?'0':'-1'}">${door?'<span class="door-half left"></span><span class="door-half right"></span>':object==='power'?'<span class="power-icon">ϟ</span><small>ENERGIA</small>':object==='console'?'<span class="console-icon">›_</span><small>LUME</small>':object==='bridge'?'<span class="bridge-icon">◇</span><small>PONTE</small>':object==='exit'?'<span class="exit-icon">⇧</span>':''}</button>`;
  }).join('')).join('')}<span class="robot-goal" id="robot-goal" aria-hidden="true">⌖</span><div class="station-robot" id="station-robot" aria-hidden="true">${robot}<span id="robot-direction"></span></div><div class="station-player" id="station-player" aria-label="Sua exploradora">${astronaut}<span class="player-companion">${robot}</span></div><span class="map-label" id="map-label"></span></div><p class="station-legend"><span>● Você</span><span>ϟ Energia</span><span>›_ Lume</span><span>◇ Ponte</span></p></div>`}
  function boot(){
-  active=true;s=load();panel=null;busy=false;bot=null;hit=null;powerSuccess=false;robotSuccess=false;ruleReport=null;hintOpen=false;token++;session=null;stopCodeRun();
+  active=true;s=load();panel=null;busy=false;bot=null;hit=null;powerSuccess=false;robotSuccess=false;ruleReport=null;hintOpen=false;failedCommand=null;token++;session=null;stopCodeRun();
   shell(`<section class="aurora"><header class="aurora-head"><a href="#inicio" aria-label="Sair da aventura e voltar ao início">← Sair</a><span>PASSO <b>AVENTURA</b></span><button type="button" id="aurora-help" aria-label="Como jogar">?</button></header><div class="aurora-quest"><span class="aurora-chapter">CAPÍTULO 1 · O SINAL PERDIDO</span><h1 id="aurora-objective"></h1><div class="aurora-milestones"><span id="milestone-power">ϟ Energia</span><span id="milestone-robot">⌘ Lume</span><span id="milestone-bridge">◇ Ponte</span></div></div>${room()}<div class="aurora-dialogue"><span class="lume-portrait">${robot}</span><div><strong>LUME · SEU COMPANHEIRO</strong><p id="aurora-message" role="status" aria-live="polite"></p></div></div><div id="aurora-controls"></div><div id="aurora-panel"></div><div id="aurora-intro"></div><p class="aurora-save" id="aurora-save"></p></section>`);
   document.body.classList.add('adventure-mode');document.body.classList.remove('study-dark');
   document.getElementById('aurora-help').onclick=()=>{hintOpen=!hintOpen;setMessage('Use as setas para caminhar. Chegue ao lado de um painel e toque em Interagir. Os objetos também podem ser tocados quando você estiver perto. Não há vidas nem limite de tentativas.');};
@@ -35,7 +35,7 @@ const Aurora=(()=>{
   document.querySelectorAll('[data-tile]').forEach(b=>{const [x,y]=b.dataset.tile.split(',').map(Number);b.classList.toggle('beacon',E.objects[objectiveId].x===x&&E.objects[objectiveId].y===y);b.classList.toggle('bumped',hit?.x===x&&hit?.y===y);});
   const player=document.getElementById('station-player');player.style.cssText=actorStyle(s.player);player.classList.toggle('face-left',face===3);player.classList.toggle('has-companion',s.robotStage===2);
   const m=E.robotMission(s),r=bot||m.start,robotEl=document.getElementById('station-robot');robotEl.style.cssText=actorStyle(r);robotEl.hidden=s.robotStage===2;robotEl.classList.toggle('awake',s.powerStage===3);document.getElementById('robot-direction').textContent=E.dirs[r.dir].arrow;
-  const goal=document.getElementById('robot-goal');goal.style.cssText=actorStyle(m.goal);goal.hidden=panel!=='robot'||s.robotStage===2;
+  const goal=document.getElementById('robot-goal');goal.style.cssText=actorStyle(m.goal);goal.hidden=panel!=='robot'||s.robotStage===2||robotSuccess;
   document.getElementById('station-caption-state').textContent=s.powerStage===3?'ENERGIA ONLINE':s.powerStage?'LUZ DE EMERGÊNCIA':'ENERGIA OFFLINE';
   document.getElementById('aurora-save').textContent=storage?'Seu ponto de exploração é salvo neste aparelho.':'O navegador não permitiu salvar este ponto. Mantenha o jogo aberto para continuar.';
   controls();drawPanel();drawIntro();
@@ -55,7 +55,7 @@ const Aurora=(()=>{
   persist();paint();
  }
  function inspect(id){
-  if(busy||!E.nearby(s).includes(id))return;hit=null;hintOpen=false;ruleReport=null;
+  if(busy||!E.nearby(s).includes(id))return;hit=null;hintOpen=false;ruleReport=null;failedCommand=null;
   if(id==='power'){panel='power';bits=0;powerSuccess=false;setMessage(s.powerStage===3?'Você restaurou todos os circuitos. A passagem está aberta.':'Cada interruptor é um bit: ligado vale 1, desligado vale 0. O número embaixo dele é a energia que ele acrescenta.');}
   if(id==='console'){if(s.powerStage<3){setMessage('Meu console precisa da energia do setor. Resolva primeiro o painel com o raio.');return}panel='robot';robotSuccess=false;bot=null;setMessage(s.robotStage===0?'Minha seta aponta para leste. Avançar move uma casa; virar só muda a direção. Monte a rota até o alvo brilhante.':'Um bloco pode repetir uma ação. Agora chegue ao terminal usando apenas um bloco.');}
   if(id==='bridge'){if(s.robotStage<2){setMessage('Esse terminal precisa do cartão que ficou com Lume. Resgate-o primeiro no console.');return}panel='bridge';setMessage('A porta só pode abrir se houver energia E cartão. Escolha a ligação e observe o que acontece nos testes.');}
@@ -91,15 +91,17 @@ const Aurora=(()=>{
    const test=document.getElementById('test-bridge');if(test)test.onclick=()=>{ruleReport=E.checkBridge(s);if(ruleReport.ok){persist();setMessage('A ligação AND protegeu todos os cenários. A porta abriu: entre no sinal!')}else setMessage('A regra OR deixou a porta abrir com apenas uma condição. A estação exige as duas ao mesmo tempo. Veja o cenário que falhou e ajuste a ligação.');paint()};
    const leave=document.getElementById('leave-bridge');if(leave)leave.onclick=()=>{panel=null;paint()};
   }
-  const close=document.getElementById('close-aurora-panel');if(close)close.onclick=()=>{if(busy)return;panel=null;hit=null;bot=null;paint()};
+  const panelHeader=host.querySelector('.aurora-panel-head');if(panelHeader)panelHeader.insertAdjacentHTML('afterend',`<p class="aurora-local-feedback"><strong>LUME</strong><span id="aurora-puzzle-feedback" role="status" aria-live="polite">${escaped(message)}</span></p>`);
+  document.querySelectorAll('[data-remove]').forEach(b=>b.classList.toggle('failed',+b.dataset.remove===failedCommand));
+  const close=document.getElementById('close-aurora-panel');if(close)close.onclick=()=>{if(busy)return;panel=null;hit=null;bot=null;failedCommand=null;paint()};
  }
  function commandName(c){return ({F:'↑ Avançar',L:'↶ Esquerda',R:'↷ Direita',F2:'⟳ 2× avançar',F3:'⟳ 3× avançar',F4:'⟳ 4× avançar',F5:'⟳ 5× avançar'})[c]}
  async function runRobot(){
-  if(busy)return;const result=E.evaluateRobot(s,s.program),runId=++token;busy=true;hit=null;bot={...E.robotMission(s).start};setMessage('Lume começa na base e segue seu programa, um comando de cada vez.');paint();
+  if(busy)return;const result=E.evaluateRobot(s,s.program),runId=++token;busy=true;hit=null;failedCommand=null;bot={...E.robotMission(s).start};setMessage('Lume começa na base e segue seu programa, um comando de cada vez.');paint();
   for(const frame of result.frames){await new Promise(resolve=>setTimeout(resolve,420));if(!active||token!==runId)return;bot=frame;paint()}
   await new Promise(resolve=>setTimeout(resolve,260));if(!active||token!==runId)return;busy=false;
   if(result.ok){E.finishRobot(s,result);robotSuccess=true;persist();setMessage(s.robotStage===2?'Dois passos com um só bloco! Eu peguei o cartão. Vamos configurar a ponte.':'Cheguei ao carregador. Sua sequência virou movimento de verdade!')}
-  else{hit=result.tile;setMessage(result.reason==='empty'?'Seu programa ainda está vazio. Adicione um comando e observe o que ele faz.':result.reason==='collision'?`No comando ${result.index+1}, eu tentei entrar em um obstáculo. O quadrado vermelho mostra onde. Ajuste a rota e execute de novo a partir da base.`:result.reason==='limit'?'Use somente um bloco nesta etapa. Uma repetição pode conter dois passos.':'Executei todos os comandos, mas ainda não cheguei ao alvo brilhante. Veja minha posição e ajuste o programa.');}
+  else{hit=result.tile;failedCommand=result.index??null;setMessage(result.reason==='empty'?'Seu programa ainda está vazio. Adicione um comando e observe o que ele faz.':result.reason==='collision'?`No comando ${result.index+1}, eu tentei entrar em um obstáculo. O quadrado vermelho mostra onde. Ajuste a rota e execute de novo a partir da base.`:result.reason==='limit'?'Use somente um bloco nesta etapa. Uma repetição pode conter dois passos.':'Executei todos os comandos, mas ainda não cheguei ao alvo brilhante. Veja minha posição e ajuste o programa.');}
   paint();
  }
  function drawIntro(){
@@ -122,3 +124,4 @@ home=function(){auroraOriginalHome();app.insertAdjacentHTML('afterbegin',`<secti
 window.removeEventListener('hashchange',auroraOriginalRoute);
 route=function(){if((location.hash.slice(1)||'inicio').split('/')[0]==='aventura'){Aurora.stop();Aurora.boot();window.scrollTo(0,0)}else{Aurora.stop();auroraOriginalRoute()}};
 window.addEventListener('hashchange',route);route();
+

@@ -1,4 +1,4 @@
-const CACHE = "passo-app-ce6ef25af97d";
+const CACHE = "passo-app-e5a8a73d383d";
 const ASSETS = ["./", "index.html", "style.css", "lessons.js", "steps.js", "curriculum.js", "lesson-refinements.js", "code-lessons.js", "journey-data.js", "lesson-journey.js", "aurora-engine.js", "aurora-game.js", "aurora-game.css", "code-practice.js", "code-worker.js", "skulpt.min.js", "skulpt-stdlib.js", "sql-asm.js", "SKULPT-LICENSE.txt", "SQLJS-LICENSE.txt", "app.js", "pwa.js", "manifest.webmanifest", "icon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png"];
 const URLS = ASSETS.map(path=>new URL(path,self.registration.scope).href);
 self.addEventListener('install',event=>{
